@@ -8,13 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Version;
 import java.lang.Override;
-import br.univel.ecommerce.CadCategoria;
+import br.univel.ecommerce.Categoria;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
 
 @Entity
-public class CadLivro implements Serializable
+public class Livro implements Serializable
 {
 
    @Id
@@ -26,7 +26,7 @@ public class CadLivro implements Serializable
    private int version;
 
    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   private CadCategoria CadCategoria;
+   private Categoria Categoria;
 
    @Column
    private String titulo;
@@ -79,11 +79,11 @@ public class CadLivro implements Serializable
       {
          return true;
       }
-      if (!(obj instanceof CadLivro))
+      if (!(obj instanceof Livro))
       {
          return false;
       }
-      CadLivro other = (CadLivro) obj;
+      Livro other = (Livro) obj;
       if (id != null)
       {
          if (!id.equals(other.id))
@@ -103,14 +103,14 @@ public class CadLivro implements Serializable
       return result;
    }
 
-   public CadCategoria getCadCategoria()
+   public Categoria getCategoria()
    {
-      return this.CadCategoria;
+      return this.Categoria;
    }
 
-   public void setCadCategoria(final CadCategoria CadCategoria)
+   public void setCadCategoria(final Categoria CadCategoria)
    {
-      this.CadCategoria = CadCategoria;
+      this.Categoria = CadCategoria;
    }
 
    public String getTitulo()

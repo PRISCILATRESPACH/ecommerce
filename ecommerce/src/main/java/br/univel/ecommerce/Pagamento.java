@@ -10,7 +10,7 @@ import javax.persistence.Version;
 import java.lang.Override;
 
 @Entity
-public class CadPagamento implements Serializable
+public class Pagamento implements Serializable
 {
 
    @Id
@@ -51,11 +51,11 @@ public class CadPagamento implements Serializable
       {
          return true;
       }
-      if (!(obj instanceof CadPagamento))
+      if (!(obj instanceof Pagamento))
       {
          return false;
       }
-      CadPagamento other = (CadPagamento) obj;
+      Pagamento other = (Pagamento) obj;
       if (id != null)
       {
          if (!id.equals(other.id))

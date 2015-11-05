@@ -8,15 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Version;
 import java.lang.Override;
-import java.util.Set;
-import java.util.HashSet;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
+import br.univel.ecommerce.Pedidos;
 import javax.persistence.ManyToOne;
-import br.univel.ecommerce.PedidoLivros;
 
 @Entity
-public class Pedidos implements Serializable
+public class PedidoLivros implements Serializable
 {
 
    @Id
@@ -27,8 +23,17 @@ public class Pedidos implements Serializable
    @Column(name = "version")
    private int version;
 
-   @OneToMany(mappedBy = "pedidoslivros", cascade = CascadeType.ALL, orphanRemoval = true)
-   private Set<PedidoLivros> pedidoslivros = new HashSet<PedidoLivros>();
+   @Column
+   private String nomeproduto;
+
+   @Column
+   private String preco;
+
+   @Column
+   private String quantidade;
+
+   @ManyToOne
+   private Pedidos pedidoslivros;
 
    public Long getId()
    {
@@ -51,26 +56,17 @@ public class Pedidos implements Serializable
    }
 
    @Override
-   public String toString()
-   {
-      String result = getClass().getSimpleName() + " ";
-      if (id != null)
-         result += "id: " + id;
-      return result;
-   }
-
-   @Override
    public boolean equals(Object obj)
    {
       if (this == obj)
       {
          return true;
       }
-      if (!(obj instanceof Pedidos))
+      if (!(obj instanceof PedidoLivros))
       {
          return false;
       }
-      Pedidos other = (Pedidos) obj;
+      PedidoLivros other = (PedidoLivros) obj;
       if (id != null)
       {
          if (!id.equals(other.id))
@@ -90,14 +86,56 @@ public class Pedidos implements Serializable
       return result;
    }
 
-   public Set<PedidoLivros> getPedidoslivros()
+   public String getNomeproduto()
+   {
+      return nomeproduto;
+   }
+
+   public void setNomeproduto(String nomeproduto)
+   {
+      this.nomeproduto = nomeproduto;
+   }
+
+   public String getPreco()
+   {
+      return preco;
+   }
+
+   public void setPreco(String preco)
+   {
+      this.preco = preco;
+   }
+
+   public String getQuantidade()
+   {
+      return quantidade;
+   }
+
+   public void setQuantidade(String quatidade)
+   {
+      this.quantidade = quatidade;
+   }
+
+   @Override
+   public String toString()
+   {
+      String result = getClass().getSimpleName() + " ";
+      if (nomeproduto != null && !nomeproduto.trim().isEmpty())
+         result += "nomeproduto: " + nomeproduto;
+      if (preco != null && !preco.trim().isEmpty())
+         result += ", preco: " + preco;
+      if (quantidade != null && !quantidade.trim().isEmpty())
+         result += ", quatidade: " + quantidade;
+      return result;
+   }
+
+   public Pedidos getPedidoslivros()
    {
       return this.pedidoslivros;
    }
 
-   public void setPedidoslivros(final Set<PedidoLivros> pedidoslivros)
+   public void setPedidoslivros(final Pedidos pedidoslivros)
    {
       this.pedidoslivros = pedidoslivros;
    }
-
 }

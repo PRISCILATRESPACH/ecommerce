@@ -8,9 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Version;
 import java.lang.Override;
+import java.util.Set;
+import java.util.HashSet;
+import br.univel.ecommerce.Livro;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 
 @Entity
-public class CadUsuario implements Serializable
+public class Categoria implements Serializable
 {
 
    @Id
@@ -20,6 +25,12 @@ public class CadUsuario implements Serializable
    @Version
    @Column(name = "version")
    private int version;
+
+   @Column
+   private String nome;
+
+   @OneToMany(mappedBy = "Categoria", cascade = CascadeType.ALL)
+   private Set<Livro> CadLivro = new HashSet<Livro>();
 
    public Long getId()
    {
@@ -42,26 +53,17 @@ public class CadUsuario implements Serializable
    }
 
    @Override
-   public String toString()
-   {
-      String result = getClass().getSimpleName() + " ";
-      if (id != null)
-         result += "id: " + id;
-      return result;
-   }
-
-   @Override
    public boolean equals(Object obj)
    {
       if (this == obj)
       {
          return true;
       }
-      if (!(obj instanceof CadUsuario))
+      if (!(obj instanceof Categoria))
       {
          return false;
       }
-      CadUsuario other = (CadUsuario) obj;
+      Categoria other = (Categoria) obj;
       if (id != null)
       {
          if (!id.equals(other.id))
@@ -79,5 +81,34 @@ public class CadUsuario implements Serializable
       int result = 1;
       result = prime * result + ((id == null) ? 0 : id.hashCode());
       return result;
+   }
+
+   public String getNome()
+   {
+      return nome;
+   }
+
+   public void setNome(String nome)
+   {
+      this.nome = nome;
+   }
+
+   @Override
+   public String toString()
+   {
+      String result = getClass().getSimpleName() + " ";
+      if (nome != null && !nome.trim().isEmpty())
+         result += "nome: " + nome;
+      return result;
+   }
+
+   public Set<Livro> getCadLivro()
+   {
+      return this.CadLivro;
+   }
+
+   public void setCadLivro(final Set<Livro> CadLivro)
+   {
+      this.CadLivro = CadLivro;
    }
 }
