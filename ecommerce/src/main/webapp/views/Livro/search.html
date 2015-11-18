@@ -1,0 +1,141 @@
+<div class="form-horizontal">
+    <h3>Create a new Livro</h3>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-sm-2">
+            <a id="Create" name="Create" class="btn btn-primary" href="#/Livros/new"><span class="glyphicon glyphicon-plus-sign"></span> Create</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div>
+    <h3>Search for Livros</h3>
+    <form id="LivroSearch" class="form-horizontal">
+        
+
+    <div class="form-group">
+        <label for="Categoria" class="col-sm-2 control-label">Categoria</label>
+        <div class="col-sm-10">
+            <select id="Categoria" name="Categoria" class="form-control" ng-model="search.Categoria" ng-options="C as C.id for C in CategoriaList">
+                <option value="">Choose a Categoria</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="titulo" class="col-sm-2 control-label">Titulo</label>
+        <div class="col-sm-10">
+            <input id="titulo" name="titulo" class="form-control" type="text" ng-model="search.titulo" placeholder="Enter the Livro Titulo"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="paginas" class="col-sm-2 control-label">Paginas</label>
+        <div class="col-sm-10">
+            <input id="paginas" name="paginas" class="form-control" type="text" ng-model="search.paginas" placeholder="Enter the Livro Paginas"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="ISBN" class="col-sm-2 control-label">ISBN</label>
+        <div class="col-sm-10">
+            <input id="ISBN" name="ISBN" class="form-control" type="text" ng-model="search.ISBN" placeholder="Enter the Livro ISBN"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="autor" class="col-sm-2 control-label">Autor</label>
+        <div class="col-sm-10">
+            <input id="autor" name="autor" class="form-control" type="text" ng-model="search.autor" placeholder="Enter the Livro Autor"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="editora" class="col-sm-2 control-label">Editora</label>
+        <div class="col-sm-10">
+            <input id="editora" name="editora" class="form-control" type="text" ng-model="search.editora" placeholder="Enter the Livro Editora"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="quantidade" class="col-sm-2 control-label">Quantidade</label>
+        <div class="col-sm-10">
+            <input id="quantidade" name="quantidade" class="form-control" type="text" ng-model="search.quantidade" placeholder="Enter the Livro Quantidade"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="preco" class="col-sm-2 control-label">Preco</label>
+        <div class="col-sm-10">
+            <input id="preco" name="preco" class="form-control" type="text" ng-model="search.preco" placeholder="Enter the Livro Preco"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="imagem" class="col-sm-2 control-label">Imagem</label>
+        <div class="col-sm-10">
+            <input id="imagem" name="imagem" class="form-control" type="text" ng-model="search.imagem" placeholder="Enter the Livro Imagem"></input>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="cadCategoria" class="col-sm-2 control-label">Cad Categoria</label>
+        <div class="col-sm-10">
+            <input id="cadCategoria" name="cadCategoria" class="form-control" type="text" ng-model="search.cadCategoria" placeholder="Enter the Livro Cad Categoria"></input>
+        </div>
+    </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-sm-10">
+                <a id="Search" name="Search" class="btn btn-primary" ng-click="performSearch()"><span class="glyphicon glyphicon-search"></span> Search</a>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="search-results">
+        <div class="table-responsive">
+        <table class="table table-responsive table-bordered table-striped clearfix">
+            <thead>
+                <tr>
+                    <th>Categoria</th>
+                    <th>Titulo</th>
+                    <th>Paginas</th>
+                    <th>ISBN</th>
+                    <th>Autor</th>
+                    <th>Editora</th>
+                    <th>Quantidade</th>
+                    <th>Preco</th>
+                    <th>Imagem</th>
+                    <th>Cad Categoria</th>
+                </tr>
+            </thead>
+            <tbody id="search-results-body">
+                <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                        <td><a href="#/Livros/edit/{{result.id}}">{{result.Categoria.id}}</a></td>
+                    <td><a href="#/Livros/edit/{{result.id}}">{{result.titulo}}</a></td>
+                    <td><a href="#/Livros/edit/{{result.id}}">{{result.paginas}}</a></td>
+                    <td><a href="#/Livros/edit/{{result.id}}">{{result.ISBN}}</a></td>
+                    <td><a href="#/Livros/edit/{{result.id}}">{{result.autor}}</a></td>
+                    <td><a href="#/Livros/edit/{{result.id}}">{{result.editora}}</a></td>
+                    <td><a href="#/Livros/edit/{{result.id}}">{{result.quantidade}}</a></td>
+                    <td><a href="#/Livros/edit/{{result.id}}">{{result.preco}}</a></td>
+                    <td><a href="#/Livros/edit/{{result.id}}">{{result.imagem}}</a></td>
+                    <td><a href="#/Livros/edit/{{result.id}}">{{result.cadCategoria}}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+        <ul class="pagination pagination-centered">
+        <li ng-class="{disabled:currentPage == 0}">
+            <a id="prev" href ng-click="previous()">«</a>
+        </li>
+        <li ng-repeat="n in pageRange" ng-class="{active:currentPage == n}" ng-click="setPage(n)">
+            <a href ng-bind="n + 1">1</a>
+        </li>
+        <li ng-class="{disabled: currentPage == (numberOfPages() - 1)}">
+            <a id="next" href ng-click="next()">»</a>
+        </li>
+    </ul>
+
+</div>

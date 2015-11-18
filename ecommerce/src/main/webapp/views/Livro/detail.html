@@ -1,0 +1,93 @@
+<header ng-switch on="$location.path().indexOf('/Livros/new') > -1">
+    <h3 ng-switch-when="true">Create a new Livro</h3>
+    <h3 ng-switch-when="false">View or edit Livro</h3>
+</header>
+<form id="LivroForm" name="LivroForm" class="form-horizontal" role="form">
+    <div ng-show="displayError" class="alert alert-danger">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.Categoria.$invalid}">
+        <label for="Categoria" class="col-sm-2 control-label">Categoria</label>
+        <div id="CategoriaControls" class="col-sm-10">
+        <select id="Categoria" name="Categoria" class="form-control" ng-model="CategoriaSelection" ng-options="C.text for C in CategoriaSelectionList"  >
+            <option value="">Choose a Categoria</option>
+        </select>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.titulo.$invalid}">
+        <label for="titulo" class="col-sm-2 control-label">Titulo</label>
+        <div id="tituloControls" class="col-sm-10">
+            <input id="titulo" name="titulo" type="text" class="form-control" ng-model="livro.titulo" placeholder="Enter the Livro Titulo"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.paginas.$invalid}">
+        <label for="paginas" class="col-sm-2 control-label">Paginas</label>
+        <div id="paginasControls" class="col-sm-10">
+            <input id="paginas" name="paginas" type="number" class="form-control" ng-model="livro.paginas" placeholder="Enter the Livro Paginas"></input>
+            <span class="help-block error" ng-show="LivroForm.paginas.$error.number">not a number</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.ISBN.$invalid}">
+        <label for="ISBN" class="col-sm-2 control-label">ISBN</label>
+        <div id="ISBNControls" class="col-sm-10">
+            <input id="ISBN" name="ISBN" type="text" class="form-control" ng-model="livro.ISBN" placeholder="Enter the Livro ISBN"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.autor.$invalid}">
+        <label for="autor" class="col-sm-2 control-label">Autor</label>
+        <div id="autorControls" class="col-sm-10">
+            <input id="autor" name="autor" type="text" class="form-control" ng-model="livro.autor" placeholder="Enter the Livro Autor"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.editora.$invalid}">
+        <label for="editora" class="col-sm-2 control-label">Editora</label>
+        <div id="editoraControls" class="col-sm-10">
+            <input id="editora" name="editora" type="text" class="form-control" ng-model="livro.editora" placeholder="Enter the Livro Editora"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.quantidade.$invalid}">
+        <label for="quantidade" class="col-sm-2 control-label">Quantidade</label>
+        <div id="quantidadeControls" class="col-sm-10">
+            <input id="quantidade" name="quantidade" type="text" class="form-control" ng-model="livro.quantidade" placeholder="Enter the Livro Quantidade"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.preco.$invalid}">
+        <label for="preco" class="col-sm-2 control-label">Preco</label>
+        <div id="precoControls" class="col-sm-10">
+            <input id="preco" name="preco" type="number" class="form-control" ng-model="livro.preco" placeholder="Enter the Livro Preco"></input>
+            <span class="help-block error" ng-show="LivroForm.preco.$error.number">not a number</span>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.imagem.$invalid}">
+        <label for="imagem" class="col-sm-2 control-label">Imagem</label>
+        <div id="imagemControls" class="col-sm-10">
+            <input id="imagem" name="imagem" type="text" class="form-control" ng-model="livro.imagem" placeholder="Enter the Livro Imagem"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': LivroForm.cadCategoria.$invalid}">
+        <label for="cadCategoria" class="col-sm-2 control-label">Cad Categoria</label>
+        <div id="cadCategoriaControls" class="col-sm-10">
+            <input id="cadCategoria" name="cadCategoria" type="text" class="form-control" ng-model="livro.cadCategoria" placeholder="Enter the Livro Cad Categoria"></input>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="saveLivro" name="saveLivro" class="btn btn-primary" ng-disabled="isClean() || LivroForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+            <button id="deleteLivro" name="deleteLivro" class="btn btn-danger" ng-show="livro.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+        </div>
+    </div>
+</form>

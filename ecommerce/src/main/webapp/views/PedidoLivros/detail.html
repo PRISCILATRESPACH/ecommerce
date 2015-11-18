@@ -1,0 +1,49 @@
+<header ng-switch on="$location.path().indexOf('/PedidoLivros/new') > -1">
+    <h3 ng-switch-when="true">Create a new PedidoLivros</h3>
+    <h3 ng-switch-when="false">View or edit PedidoLivros</h3>
+</header>
+<form id="PedidoLivrosForm" name="PedidoLivrosForm" class="form-horizontal" role="form">
+    <div ng-show="displayError" class="alert alert-danger">
+        <strong>Error!</strong> Something broke. Retry, or cancel and start afresh.
+    </div>
+    
+
+    <div class="form-group" ng-class="{'has-error': PedidoLivrosForm.nomeproduto.$invalid}">
+        <label for="nomeproduto" class="col-sm-2 control-label">Nomeproduto</label>
+        <div id="nomeprodutoControls" class="col-sm-10">
+            <input id="nomeproduto" name="nomeproduto" type="text" class="form-control" ng-model="pedidoLivros.nomeproduto" placeholder="Enter the PedidoLivros Nomeproduto"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PedidoLivrosForm.preco.$invalid}">
+        <label for="preco" class="col-sm-2 control-label">Preco</label>
+        <div id="precoControls" class="col-sm-10">
+            <input id="preco" name="preco" type="text" class="form-control" ng-model="pedidoLivros.preco" placeholder="Enter the PedidoLivros Preco"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PedidoLivrosForm.quantidade.$invalid}">
+        <label for="quantidade" class="col-sm-2 control-label">Quantidade</label>
+        <div id="quantidadeControls" class="col-sm-10">
+            <input id="quantidade" name="quantidade" type="text" class="form-control" ng-model="pedidoLivros.quantidade" placeholder="Enter the PedidoLivros Quantidade"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': PedidoLivrosForm.pedidoslivros.$invalid}">
+        <label for="pedidoslivros" class="col-sm-2 control-label">Pedidoslivros</label>
+        <div id="pedidoslivrosControls" class="col-sm-10">
+        <select id="pedidoslivros" name="pedidoslivros" class="form-control" ng-model="pedidoslivrosSelection" ng-options="p.text for p in pedidoslivrosSelectionList"  >
+            <option value="">Choose a Pedidoslivros</option>
+        </select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="savePedidoLivros" name="savePedidoLivros" class="btn btn-primary" ng-disabled="isClean() || PedidoLivrosForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+            <button id="deletePedidoLivros" name="deletePedidoLivros" class="btn btn-danger" ng-show="pedidoLivros.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+        </div>
+    </div>
+</form>
