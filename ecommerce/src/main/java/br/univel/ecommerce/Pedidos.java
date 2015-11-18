@@ -14,8 +14,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
 import br.univel.ecommerce.PedidoLivros;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class Pedidos implements Serializable
 {
 

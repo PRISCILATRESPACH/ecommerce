@@ -1,19 +1,26 @@
 package br.univel.ecommerce;
 
 import javax.persistence.Entity;
+
 import java.io.Serializable;
+
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Version;
+
 import java.lang.Override;
+
 import br.univel.ecommerce.Categoria;
+
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class Livro implements Serializable
 {
 
@@ -213,4 +220,6 @@ public class Livro implements Serializable
          result += ", imagem: " + imagem;
       return result;
    }
+
+
 }

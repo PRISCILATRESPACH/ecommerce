@@ -8,8 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Version;
 import java.lang.Override;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class Carrinho implements Serializable
 {
 
@@ -80,4 +82,9 @@ public class Carrinho implements Serializable
       result = prime * result + ((id == null) ? 0 : id.hashCode());
       return result;
    }
+
+public void limpar() {
+	// TODO Auto-generated method stub
+	
+}
 }
