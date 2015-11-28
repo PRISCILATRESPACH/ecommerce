@@ -1,6 +1,6 @@
 
 
-angular.module('ecommerce').controller('EditPedidoLivrosController', function($scope, $routeParams, $location, PedidoLivrosResource , PedidosResource) {
+angular.module('ecommerce').controller('EditPedidoLivrosController', function($scope, $routeParams, $location, PedidoLivrosResource ) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
@@ -9,23 +9,6 @@ angular.module('ecommerce').controller('EditPedidoLivrosController', function($s
         var successCallback = function(data){
             self.original = data;
             $scope.pedidoLivros = new PedidoLivrosResource(self.original);
-            PedidosResource.queryAll(function(items) {
-                $scope.pedidoslivrosSelectionList = $.map(items, function(item) {
-                    var wrappedObject = {
-                        id : item.id
-                    };
-                    var labelObject = {
-                        value : item.id,
-                        text : item.id
-                    };
-                    if($scope.pedidoLivros.pedidoslivros && item.id == $scope.pedidoLivros.pedidoslivros.id) {
-                        $scope.pedidoslivrosSelection = labelObject;
-                        $scope.pedidoLivros.pedidoslivros = wrappedObject;
-                        self.original.pedidoslivros = $scope.pedidoLivros.pedidoslivros;
-                    }
-                    return labelObject;
-                });
-            });
         };
         var errorCallback = function() {
             $location.path("/PedidoLivros");
@@ -63,12 +46,6 @@ angular.module('ecommerce').controller('EditPedidoLivrosController', function($s
         $scope.pedidoLivros.$remove(successCallback, errorCallback);
     };
     
-    $scope.$watch("pedidoslivrosSelection", function(selection) {
-        if (typeof selection != 'undefined') {
-            $scope.pedidoLivros.pedidoslivros = {};
-            $scope.pedidoLivros.pedidoslivros.id = selection.value;
-        }
-    });
     
     $scope.get();
 });

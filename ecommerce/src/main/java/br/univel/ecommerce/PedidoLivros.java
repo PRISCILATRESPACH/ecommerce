@@ -29,13 +29,12 @@ public class PedidoLivros implements Serializable
    private String nomeproduto;
 
    @Column
-   private String preco;
+   private double preco;
 
    @Column
-   private String quantidade;
+   private int quantidade;
 
-   @ManyToOne
-   private Pedidos pedidoslivros;
+ 
 
    public Long getId()
    {
@@ -98,46 +97,26 @@ public class PedidoLivros implements Serializable
       this.nomeproduto = nomeproduto;
    }
 
-   public String getPreco()
+   public double getPreco()
    {
       return preco;
    }
 
-   public void setPreco(String preco)
+   public void setPreco(double preco)
    {
       this.preco = preco;
    }
 
-   public String getQuantidade()
+   public int getQuantidade()
    {
       return quantidade;
    }
 
-   public void setQuantidade(String quatidade)
+   public void setQuantidade(int quatidade)
    {
       this.quantidade = quatidade;
    }
 
-   @Override
-   public String toString()
-   {
-      String result = getClass().getSimpleName() + " ";
-      if (nomeproduto != null && !nomeproduto.trim().isEmpty())
-         result += "nomeproduto: " + nomeproduto;
-      if (preco != null && !preco.trim().isEmpty())
-         result += ", preco: " + preco;
-      if (quantidade != null && !quantidade.trim().isEmpty())
-         result += ", quatidade: " + quantidade;
-      return result;
-   }
+ 
 
-   public Pedidos getPedidoslivros()
-   {
-      return this.pedidoslivros;
-   }
-
-   public void setPedidoslivros(final Pedidos pedidoslivros)
-   {
-      this.pedidoslivros = pedidoslivros;
-   }
 }

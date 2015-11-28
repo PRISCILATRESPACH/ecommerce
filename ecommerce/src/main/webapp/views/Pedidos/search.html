@@ -13,6 +13,22 @@
         
 
 
+    <div class="form-group">
+        <label for="usuario" class="col-sm-2 control-label">Usuario</label>
+        <div class="col-sm-10">
+            <select id="usuario" name="usuario" class="form-control" ng-model="search.usuario" ng-options="u as u.id for u in usuarioList">
+                <option value="">Choose a Usuario</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="totalVenda" class="col-sm-2 control-label">Total Venda</label>
+        <div class="col-sm-10">
+            <input id="totalVenda" name="totalVenda" class="form-control" type="text" ng-model="search.totalVenda" placeholder="Enter the Pedidos Total Venda"></input>
+        </div>
+    </div>
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-sm-10">
@@ -26,10 +42,14 @@
         <table class="table table-responsive table-bordered table-striped clearfix">
             <thead>
                 <tr>
+                    <th>Usuario</th>
+                    <th>Total Venda</th>
                 </tr>
             </thead>
             <tbody id="search-results-body">
                 <tr ng-repeat="result in searchResults | searchFilter:searchResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                        <td><a href="#/Pedidos/edit/{{result.id}}">{{result.usuario.id}}</a></td>
+                    <td><a href="#/Pedidos/edit/{{result.id}}">{{result.totalVenda}}</a></td>
                 </tr>
             </tbody>
         </table>

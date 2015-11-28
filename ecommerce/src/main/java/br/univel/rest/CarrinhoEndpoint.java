@@ -1,124 +1,90 @@
 package br.univel.rest;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ejb.Stateful;
+import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
+
+import br.univel.dao.LivroDao;
+import br.univel.dao.PedidosDao;
+import br.univel.dao.UsuarioDao;
 import br.univel.ecommerce.Carrinho;
+import br.univel.ecommerce.Livro;
+import br.univel.ecommerce.PedidoLivros;
+import br.univel.ecommerce.Pedidos;
 
-/**
- * 
- */
-@Stateless
-@Path("/carrinhos")
-public class CarrinhoEndpoint
-{
-   @PersistenceContext(unitName = "ecommerce-persistence-unit")
-   private EntityManager em;
+@Stateful
+@Path("/cart")
+public class CarrinhoEndpoint implements Serializable {
 
-   @POST
-   @Consumes("application/json")
-   public Response create(Carrinho entity)
-   {
-      em.persist(entity);
-      return Response.created(UriBuilder.fromResource(CarrinhoEndpoint.class).path(String.valueOf(entity.getId())).build()).build();
-   }
+	HashMap<Long, Integer> map = new HashMap<Long, Integer>();
 
-   @DELETE
-   @Path("/{id:[0-9][0-9]*}")
-   public Response deleteById(@PathParam("id") Long id)
-   {
-      Carrinho entity = em.find(Carrinho.class, id);
-      if (entity == null)
-      {
-         return Response.status(Status.NOT_FOUND).build();
-      }
-      em.remove(entity);
-      return Response.noContent().build();
-   }
+	@Inject
+	private Carrinho carrinho;
 
-   @GET
-   @Path("/{id:[0-9][0-9]*}")
-   @Produces("application/json")
-   public Response findById(@PathParam("id") Long id)
-   {
-      TypedQuery<Carrinho> findByIdQuery = em.createQuery("SELECT DISTINCT c FROM Carrinho c WHERE c.id = :entityId ORDER BY c.id", Carrinho.class);
-      findByIdQuery.setParameter("entityId", id);
-      Carrinho entity;
-      try
-      {
-         entity = findByIdQuery.getSingleResult();
-      }
-      catch (NoResultException nre)
-      {
-         entity = null;
-      }
-      if (entity == null)
-      {
-         return Response.status(Status.NOT_FOUND).build();
-      }
-      return Response.ok(entity).build();
-   }
+	@Inject
+	private LivroDao pe;
 
-   @GET
-   @Produces("application/json")
-   public List<Carrinho> listAll(@QueryParam("start") Integer startPosition, @QueryParam("max") Integer maxResult)
-   {
-      TypedQuery<Carrinho> findAllQuery = em.createQuery("SELECT DISTINCT c FROM Carrinho c ORDER BY c.id", Carrinho.class);
-      if (startPosition != null)
-      {
-         findAllQuery.setFirstResult(startPosition);
-      }
-      if (maxResult != null)
-      {
-         findAllQuery.setMaxResults(maxResult);
-      }
-      final List<Carrinho> results = findAllQuery.getResultList();
-      return results;
-   }
+	@Inject
+	PedidosDao pdao;
 
-   @PUT
-   @Path("/{id:[0-9][0-9]*}")
-   @Consumes("application/json")
-   public Response update(@PathParam("id") Long id, Carrinho entity)
-   {
-      if (entity == null)
-      {
-         return Response.status(Status.BAD_REQUEST).build();
-      }
-      if (!id.equals(entity.getId()))
-      {
-         return Response.status(Status.CONFLICT).entity(entity).build();
-      }
-      if (em.find(Carrinho.class, id) == null)
-      {
-         return Response.status(Status.NOT_FOUND).build();
-      }
-      try
-      {
-         entity = em.merge(entity);
-      }
-      catch (OptimisticLockException e)
-      {
-         return Response.status(Response.Status.CONFLICT).entity(e.getEntity()).build();
-      }
+	@Inject
+	UsuarioDao udao;
 
-      return Response.noContent().build();
-   }
+	@Path("/adicionar/{id:[0-9][0-9]*}/{qtd:[0-9][0-9]*}")
+	public void adicionarProduto(@PathParam("id") long id,
+			@PathParam("qtd") int qtd) {
+		Livro l = pe.findById(id);
+		boolean flag = false;
+		map.put(id, qtd);
+
+		if (!carrinho.getLivros().isEmpty())
+			for (Livro prod : carrinho.getLivros()) {
+				if (prod.getId() == id) {
+					map.replace(prod.getId(), qtd);
+					flag = false;
+				} else {
+
+					map.put(l.getId(), qtd);
+					flag = true;
+				}
+			}
+		else
+			carrinho.addLivro(l);
+		if (flag)
+			carrinho.getLivros().remove(l);
+	}
+
+	@Path("/limparCarrinho/")
+	public void limpar() {
+		carrinho.limpar();
+		map.clear();
+	}
+
+	@Path("/finalizar/{idusuario:[0-9][0-9]*}")
+	public void finalizar(@PathParam("idusuario") long Idusuario) {
+		Pedidos pedido = new Pedidos();
+		Set<PedidoLivros> lista = new HashSet<>();
+		double total = 0;
+
+		for (Livro p : carrinho.getLivros()) {
+			PedidoLivros pl = new PedidoLivros();
+			pl.setNomeproduto(p.getTitulo());
+			pl.setPreco(p.getPreco());
+			pl.setQuantidade(map.get(p.getId()));
+			lista.add(pl);
+			total += p.getPreco() * pl.getQuantidade();
+		}
+
+		pedido.setPedidoslivros(lista);
+		pedido.setTotalVenda(total);
+		pedido.setUsuario(udao.findById(Idusuario));
+		pdao.create(pedido);
+	}
+
 }

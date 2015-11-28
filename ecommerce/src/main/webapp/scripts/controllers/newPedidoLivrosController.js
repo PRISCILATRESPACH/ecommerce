@@ -1,23 +1,8 @@
 
-angular.module('ecommerce').controller('NewPedidoLivrosController', function ($scope, $location, locationParser, PedidoLivrosResource , PedidosResource) {
+angular.module('ecommerce').controller('NewPedidoLivrosController', function ($scope, $location, locationParser, PedidoLivrosResource ) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.pedidoLivros = $scope.pedidoLivros || {};
-    
-    $scope.pedidoslivrosList = PedidosResource.queryAll(function(items){
-        $scope.pedidoslivrosSelectionList = $.map(items, function(item) {
-            return ( {
-                value : item.id,
-                text : item.id
-            });
-        });
-    });
-    $scope.$watch("pedidoslivrosSelection", function(selection) {
-        if ( typeof selection != 'undefined') {
-            $scope.pedidoLivros.pedidoslivros = {};
-            $scope.pedidoLivros.pedidoslivros.id = selection.value;
-        }
-    });
     
 
     $scope.save = function() {

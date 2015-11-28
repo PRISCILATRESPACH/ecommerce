@@ -58,7 +58,7 @@ public class PedidoLivrosEndpoint
    @Produces("application/json")
    public Response findById(@PathParam("id") Long id)
    {
-      TypedQuery<PedidoLivros> findByIdQuery = em.createQuery("SELECT DISTINCT p FROM PedidoLivros p LEFT JOIN FETCH p.pedidoslivros WHERE p.id = :entityId ORDER BY p.id", PedidoLivros.class);
+      TypedQuery<PedidoLivros> findByIdQuery = em.createQuery("SELECT DISTINCT p FROM PedidoLivros p WHERE p.id = :entityId ORDER BY p.id", PedidoLivros.class);
       findByIdQuery.setParameter("entityId", id);
       PedidoLivros entity;
       try
@@ -80,7 +80,7 @@ public class PedidoLivrosEndpoint
    @Produces("application/json")
    public List<PedidoLivros> listAll(@QueryParam("start") Integer startPosition, @QueryParam("max") Integer maxResult)
    {
-      TypedQuery<PedidoLivros> findAllQuery = em.createQuery("SELECT DISTINCT p FROM PedidoLivros p LEFT JOIN FETCH p.pedidoslivros ORDER BY p.id", PedidoLivros.class);
+      TypedQuery<PedidoLivros> findAllQuery = em.createQuery("SELECT DISTINCT p FROM PedidoLivros p ORDER BY p.id", PedidoLivros.class);
       if (startPosition != null)
       {
          findAllQuery.setFirstResult(startPosition);

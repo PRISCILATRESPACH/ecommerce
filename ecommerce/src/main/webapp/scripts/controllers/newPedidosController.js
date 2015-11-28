@@ -1,5 +1,5 @@
 
-angular.module('ecommerce').controller('NewPedidosController', function ($scope, $location, locationParser, PedidosResource , PedidoLivrosResource) {
+angular.module('ecommerce').controller('NewPedidosController', function ($scope, $location, locationParser, PedidosResource , PedidoLivrosResource, UsuarioResource) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.pedidos = $scope.pedidos || {};
@@ -20,6 +20,21 @@ angular.module('ecommerce').controller('NewPedidosController', function ($scope,
                 collectionItem.id = selectedItem.value;
                 $scope.pedidos.pedidoslivros.push(collectionItem);
             });
+        }
+    });
+    
+    $scope.usuarioList = UsuarioResource.queryAll(function(items){
+        $scope.usuarioSelectionList = $.map(items, function(item) {
+            return ( {
+                value : item.id,
+                text : item.id
+            });
+        });
+    });
+    $scope.$watch("usuarioSelection", function(selection) {
+        if ( typeof selection != 'undefined') {
+            $scope.pedidos.usuario = {};
+            $scope.pedidos.usuario.id = selection.value;
         }
     });
     

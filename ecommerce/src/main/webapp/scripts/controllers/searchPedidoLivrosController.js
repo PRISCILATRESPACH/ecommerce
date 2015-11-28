@@ -1,6 +1,6 @@
 
 
-angular.module('ecommerce').controller('SearchPedidoLivrosController', function($scope, $http, PedidoLivrosResource , PedidosResource) {
+angular.module('ecommerce').controller('SearchPedidoLivrosController', function($scope, $http, PedidoLivrosResource ) {
 
     $scope.search={};
     $scope.currentPage = 0;
@@ -17,7 +17,6 @@ angular.module('ecommerce').controller('SearchPedidoLivrosController', function(
         }
         return max;
     };
-    $scope.pedidoslivrosList = PedidosResource.queryAll();
 
     $scope.performSearch = function() {
         $scope.searchResults = PedidoLivrosResource.queryAll(function(){

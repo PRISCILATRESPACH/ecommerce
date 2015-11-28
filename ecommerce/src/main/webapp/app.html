@@ -34,14 +34,12 @@
                     </a>
                     <nav class="sidebar-nav" ng-controller="NavController" role="navigation">
                         <div id="sidebar-entries" class="list-group">
-                        	<a class="list-group-item" ng-class="{active: matchesRoute('Carrinhos')}" href="#/Carrinhos" data-toggle="offcanvas">Carrinhos</a>
                         	<a class="list-group-item" ng-class="{active: matchesRoute('Categoria')}" href="#/Categoria" data-toggle="offcanvas">Categoria</a>
                         	<a class="list-group-item" ng-class="{active: matchesRoute('Livros')}" href="#/Livros" data-toggle="offcanvas">Livros</a>
                         	<a class="list-group-item" ng-class="{active: matchesRoute('Pagamentos')}" href="#/Pagamentos" data-toggle="offcanvas">Pagamentos</a>
                         	<a class="list-group-item" ng-class="{active: matchesRoute('PedidoLivros')}" href="#/PedidoLivros" data-toggle="offcanvas">PedidoLivros</a>
                         	<a class="list-group-item" ng-class="{active: matchesRoute('Pedidos')}" href="#/Pedidos" data-toggle="offcanvas">Pedidos</a>
                         	<a class="list-group-item" ng-class="{active: matchesRoute('Usuarios')}" href="#/Usuarios" data-toggle="offcanvas">Usuarios</a>
-                        	<a class="list-group-item" ng-class="{active: matchesRoute('Vendas')}" href="#/Vendas" data-toggle="offcanvas">Vendas</a>
                         </div>
                     </nav>
                 </div>
@@ -75,10 +73,6 @@
     <script src="scripts/filters/startFromFilter.js"></script>
     <script src="scripts/filters/genericSearchFilter.js"></script>
     <script src="scripts/services/locationParser.js"></script>
-    <script src="scripts/services/CarrinhoFactory.js"></script>
-    <script src="scripts/controllers/newCarrinhoController.js"></script>
-    <script src="scripts/controllers/searchCarrinhoController.js"></script>
-    <script src="scripts/controllers/editCarrinhoController.js"></script>
     <script src="scripts/services/CategoriaFactory.js"></script>
     <script src="scripts/controllers/newCategoriaController.js"></script>
     <script src="scripts/controllers/searchCategoriaController.js"></script>
@@ -103,9 +97,5 @@
     <script src="scripts/controllers/newUsuarioController.js"></script>
     <script src="scripts/controllers/searchUsuarioController.js"></script>
     <script src="scripts/controllers/editUsuarioController.js"></script>
-    <script src="scripts/services/VendaFactory.js"></script>
-    <script src="scripts/controllers/newVendaController.js"></script>
-    <script src="scripts/controllers/searchVendaController.js"></script>
-    <script src="scripts/controllers/editVendaController.js"></script>
 </body>
 </html>

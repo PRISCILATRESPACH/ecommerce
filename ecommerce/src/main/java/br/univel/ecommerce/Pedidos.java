@@ -1,20 +1,31 @@
 package br.univel.ecommerce;
 
 import javax.persistence.Entity;
+
 import java.io.Serializable;
+
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
+import javax.persistence.ManyToMany;
 import javax.persistence.Version;
+
 import java.lang.Override;
 import java.util.Set;
 import java.util.HashSet;
+
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
+
 import br.univel.ecommerce.PedidoLivros;
+
 import javax.xml.bind.annotation.XmlRootElement;
+
+import br.univel.ecommerce.Usuario;
+
+import javax.persistence.FetchType;
 
 @Entity
 @XmlRootElement
@@ -29,8 +40,14 @@ public class Pedidos implements Serializable
    @Column(name = "version")
    private int version;
 
-   @OneToMany(mappedBy = "pedidoslivros", cascade = CascadeType.ALL, orphanRemoval = true)
+   @ManyToMany
    private Set<PedidoLivros> pedidoslivros = new HashSet<PedidoLivros>();
+
+   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   private Usuario usuario;
+
+   @Column
+   private double totalVenda;
 
    public Long getId()
    {
@@ -50,15 +67,6 @@ public class Pedidos implements Serializable
    public void setVersion(final int version)
    {
       this.version = version;
-   }
-
-   @Override
-   public String toString()
-   {
-      String result = getClass().getSimpleName() + " ";
-      if (id != null)
-         result += "id: " + id;
-      return result;
    }
 
    @Override
@@ -100,6 +108,34 @@ public class Pedidos implements Serializable
    public void setPedidoslivros(final Set<PedidoLivros> pedidoslivros)
    {
       this.pedidoslivros = pedidoslivros;
+   }
+
+   public Usuario getUsuario()
+   {
+      return this.usuario;
+   }
+
+   public void setUsuario(final Usuario usuario)
+   {
+      this.usuario = usuario;
+   }
+
+   public double getTotalVenda()
+   {
+      return totalVenda;
+   }
+
+   public void setTotalVenda(double totalVenda)
+   {
+      this.totalVenda = totalVenda;
+   }
+
+   @Override
+   public String toString()
+   {
+      String result = getClass().getSimpleName() + " ";
+      result += "totalVenda: " + totalVenda;
+      return result;
    }
 
 }

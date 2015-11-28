@@ -1,6 +1,6 @@
 
 
-angular.module('ecommerce').controller('EditPedidosController', function($scope, $routeParams, $location, PedidosResource , PedidoLivrosResource) {
+angular.module('ecommerce').controller('EditPedidosController', function($scope, $routeParams, $location, PedidosResource , PedidoLivrosResource, UsuarioResource) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
@@ -26,6 +26,23 @@ angular.module('ecommerce').controller('EditPedidosController', function($scope,
                             }
                         });
                         self.original.pedidoslivros = $scope.pedidos.pedidoslivros;
+                    }
+                    return labelObject;
+                });
+            });
+            UsuarioResource.queryAll(function(items) {
+                $scope.usuarioSelectionList = $.map(items, function(item) {
+                    var wrappedObject = {
+                        id : item.id
+                    };
+                    var labelObject = {
+                        value : item.id,
+                        text : item.id
+                    };
+                    if($scope.pedidos.usuario && item.id == $scope.pedidos.usuario.id) {
+                        $scope.usuarioSelection = labelObject;
+                        $scope.pedidos.usuario = wrappedObject;
+                        self.original.usuario = $scope.pedidos.usuario;
                     }
                     return labelObject;
                 });
@@ -76,6 +93,12 @@ angular.module('ecommerce').controller('EditPedidosController', function($scope,
                 collectionItem.id = selectedItem.value;
                 $scope.pedidos.pedidoslivros.push(collectionItem);
             });
+        }
+    });
+    $scope.$watch("usuarioSelection", function(selection) {
+        if (typeof selection != 'undefined') {
+            $scope.pedidos.usuario = {};
+            $scope.pedidos.usuario.id = selection.value;
         }
     });
     

@@ -33,15 +33,6 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label for="pedidoslivros" class="col-sm-2 control-label">Pedidoslivros</label>
-        <div class="col-sm-10">
-            <select id="pedidoslivros" name="pedidoslivros" class="form-control" ng-model="search.pedidoslivros" ng-options="p as p.id for p in pedidoslivrosList">
-                <option value="">Choose a Pedidoslivros</option>
-            </select>
-        </div>
-    </div>
-
 
         <div class="form-group">
             <div class="col-md-offset-2 col-sm-10">
@@ -58,7 +49,6 @@
                     <th>Nomeproduto</th>
                     <th>Preco</th>
                     <th>Quantidade</th>
-                    <th>Pedidoslivros</th>
                 </tr>
             </thead>
             <tbody id="search-results-body">
@@ -66,7 +56,6 @@
                     <td><a href="#/PedidoLivros/edit/{{result.id}}">{{result.nomeproduto}}</a></td>
                     <td><a href="#/PedidoLivros/edit/{{result.id}}">{{result.preco}}</a></td>
                     <td><a href="#/PedidoLivros/edit/{{result.id}}">{{result.quantidade}}</a></td>
-                        <td><a href="#/PedidoLivros/edit/{{result.id}}">{{result.pedidoslivros.id}}</a></td>
                 </tr>
             </tbody>
         </table>
