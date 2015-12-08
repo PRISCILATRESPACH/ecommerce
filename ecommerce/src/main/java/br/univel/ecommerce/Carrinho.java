@@ -14,6 +14,7 @@ import javax.persistence.Version;
 import java.lang.Override;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,8 +32,10 @@ public class Carrinho implements Serializable
 
 	public List<Livro> getLivros() {
 		List<Livro> ls = new ArrayList<Livro>();
-		while(livros.keySet().iterator().hasNext()){
-			Livro l = livros.keySet().iterator().next();
+		Iterator<Livro> it = livros.keySet().iterator();
+		while(it.hasNext()){
+			
+			Livro l = it.next();
 			ls.add(l);
 		}
 		return ls;

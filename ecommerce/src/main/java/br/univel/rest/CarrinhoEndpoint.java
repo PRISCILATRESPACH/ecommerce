@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 import br.univel.dao.LivroDao;
+import br.univel.dao.PedidoLivrosDao;
 import br.univel.dao.PedidosDao;
 import br.univel.dao.UsuarioDao;
 import br.univel.ecommerce.Carrinho;
@@ -23,6 +24,9 @@ import br.univel.ecommerce.Pedidos;
 @Stateful
 @Path("/cart")
 public class CarrinhoEndpoint implements Serializable {
+	
+	@Inject
+	private PedidoLivrosDao pldao;
 
 	@Inject
 	private Carrinho carrinho;
@@ -67,6 +71,7 @@ public class CarrinhoEndpoint implements Serializable {
 			pl.setQuantidade(carrinho.getMap().get(p));
 			lista.add(pl);
 			total += p.getPreco() * pl.getQuantidade();
+			pldao.create(pl);
 		}
 
 		pedido.setPedidoslivros(lista);
