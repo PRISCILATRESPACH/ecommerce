@@ -13,6 +13,7 @@ import javax.persistence.Version;
 
 import java.lang.Override;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,24 +23,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Carrinho implements Serializable
 {
 
-   
-   List<Livro> livros = new ArrayList<Livro>();
+	HashMap<Livro, Integer> livros = new HashMap<Livro, Integer>();
 
-   
+	public void limpar() {
+		livros.clear();
+	}
 
+	public List<Livro> getLivros() {
+		List<Livro> ls = new ArrayList<Livro>();
+		while(livros.keySet().iterator().hasNext()){
+			Livro l = livros.keySet().iterator().next();
+			ls.add(l);
+		}
+		return ls;
+	}
 
-public void limpar() {
-	livros.clear();
+	public void addLivro(Livro l, int quantidade) {
+		if(livros.containsKey(l))
+			livros.replace(l, quantidade);
+		else
+			livros.put(l, quantidade);
+	}
 	
-}
-
-public List<Livro> getLivros() {
+	public HashMap<Livro,Integer> getMap(){
+		return livros;
+	}
 	
-	return livros;
-}
-
-public void addLivro(Livro l) {
-	livros.add(l);
-	
-}
+	public double getTotal(){
+		double total = 0;
+		while(livros.keySet().iterator().hasNext()){
+			Livro l = livros.keySet().iterator().next();
+			total += l.getPreco() * livros.get(l);
+		}
+		return total;
+	}
 }

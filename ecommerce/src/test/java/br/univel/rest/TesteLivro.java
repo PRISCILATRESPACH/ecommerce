@@ -3,6 +3,8 @@ package br.univel.rest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.math.BigDecimal;
+
 import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -16,15 +18,12 @@ import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
 import org.junit.Test;
 
 import br.univel.dao.CategoriaDao;
+import br.univel.ecommerce.Categoria;
 import br.univel.ecommerce.Livro;
 
 
 
 public class TesteLivro {
-	
-@Inject
-CategoriaDao cdao;
-	
 	private Client createClient() {
 		return ClientBuilder.newBuilder()
 				.register(JacksonJaxbJsonProvider.class).build();
@@ -35,13 +34,13 @@ CategoriaDao cdao;
 
 		Livro livro = new Livro();
 		livro.setTitulo("Jogos Vorazes");
-		livro.setCadCategoria(cdao.findById(new Long (1)));
+		livro.setCategoria(buscarCategoria(new Long(2)));
 		livro.setAutor("Suzanne Collins");
 		livro.setEditora("Rocco");
 		livro.setISBN("978-85-7980-024-5");
 		livro.setImagem("D:\\livros\\jogos vorazes.png");
 		livro.setPaginas(400);
-		livro.setQuantidade("1");
+		livro.setQuantidade("1000");
 		livro.setPreco(30.00);
 		
 
@@ -93,15 +92,22 @@ CategoriaDao cdao;
 		assertEquals(livro.getISBN(), livroGravado.getISBN());
 		assertEquals(livro.getImagem(), livroGravado.getImagem());
 		assertEquals(livro.getPaginas(), livroGravado.getPaginas());
-		assertEquals(livro.getPreco(), livroGravado.getPreco());
+		assertEquals(new BigDecimal(livro.getPreco()), new BigDecimal(livroGravado.getPreco()));
 		assertEquals(livro.getQuantidade(), livroGravado.getQuantidade());
+	}
+	
+	private Categoria buscarCategoria(Long id) {
+		Client webClientLeitura = createClient();
 		
-		
-		
-		
-		
-		
+		WebTarget destinoLeitura = webClientLeitura
+				.target("http://localhost:8080/ecommerce/rest/categoria/"+id);
 
+		Response respostaLeitura = destinoLeitura
+				.request(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON).get();
+
+		Categoria c = respostaLeitura.readEntity(Categoria.class);
+		return c;
 	}
 }
 

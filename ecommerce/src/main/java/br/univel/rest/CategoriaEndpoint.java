@@ -58,7 +58,7 @@ public class CategoriaEndpoint
    @Produces("application/json")
    public Response findById(@PathParam("id") Long id)
    {
-      TypedQuery<Categoria> findByIdQuery = em.createQuery("SELECT DISTINCT c FROM Categoria c LEFT JOIN FETCH c.CadLivro WHERE c.id = :entityId ORDER BY c.id", Categoria.class);
+      TypedQuery<Categoria> findByIdQuery = em.createQuery("SELECT DISTINCT c FROM Categoria c WHERE c.id = :entityId ORDER BY c.id", Categoria.class);
       findByIdQuery.setParameter("entityId", id);
       Categoria entity;
       try
@@ -80,7 +80,7 @@ public class CategoriaEndpoint
    @Produces("application/json")
    public List<Categoria> listAll(@QueryParam("start") Integer startPosition, @QueryParam("max") Integer maxResult)
    {
-      TypedQuery<Categoria> findAllQuery = em.createQuery("SELECT DISTINCT c FROM Categoria c LEFT JOIN FETCH c.CadLivro ORDER BY c.id", Categoria.class);
+      TypedQuery<Categoria> findAllQuery = em.createQuery("SELECT DISTINCT c FROM Categoria c ORDER BY c.id", Categoria.class);
       if (startPosition != null)
       {
          findAllQuery.setFirstResult(startPosition);

@@ -31,8 +31,7 @@ public class Categoria implements Serializable
    @Column
    private String nome;
 
-   @OneToMany(mappedBy = "Categoria", cascade = CascadeType.ALL)
-   private Set<Livro> CadLivro = new HashSet<Livro>();
+  
 
    public Long getId()
    {
@@ -104,13 +103,5 @@ public class Categoria implements Serializable
       return result;
    }
 
-   public Set<Livro> getCadLivro()
-   {
-      return this.CadLivro;
-   }
-
-   public void setCadLivro(final Set<Livro> CadLivro)
-   {
-      this.CadLivro = CadLivro;
-   }
+  
 }

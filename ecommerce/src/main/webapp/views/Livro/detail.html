@@ -8,10 +8,10 @@
     </div>
     
 
-    <div class="form-group" ng-class="{'has-error': LivroForm.Categoria.$invalid}">
-        <label for="Categoria" class="col-sm-2 control-label">Categoria</label>
-        <div id="CategoriaControls" class="col-sm-10">
-        <select id="Categoria" name="Categoria" class="form-control" ng-model="CategoriaSelection" ng-options="C.text for C in CategoriaSelectionList"  >
+    <div class="form-group" ng-class="{'has-error': LivroForm.categoria.$invalid}">
+        <label for="categoria" class="col-sm-2 control-label">Categoria</label>
+        <div id="categoriaControls" class="col-sm-10">
+        <select id="categoria" name="categoria" class="form-control" ng-model="categoriaSelection" ng-options="c.text for c in categoriaSelectionList"  >
             <option value="">Choose a Categoria</option>
         </select>
         </div>
@@ -72,13 +72,6 @@
         <label for="imagem" class="col-sm-2 control-label">Imagem</label>
         <div id="imagemControls" class="col-sm-10">
             <input id="imagem" name="imagem" type="text" class="form-control" ng-model="livro.imagem" placeholder="Enter the Livro Imagem"></input>
-        </div>
-    </div>
-
-    <div class="form-group" ng-class="{'has-error': LivroForm.cadCategoria.$invalid}">
-        <label for="cadCategoria" class="col-sm-2 control-label">Cad Categoria</label>
-        <div id="cadCategoriaControls" class="col-sm-10">
-            <input id="cadCategoria" name="cadCategoria" type="text" class="form-control" ng-model="livro.cadCategoria" placeholder="Enter the Livro Cad Categoria"></input>
         </div>
     </div>
 

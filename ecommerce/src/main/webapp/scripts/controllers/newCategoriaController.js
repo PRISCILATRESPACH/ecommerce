@@ -1,27 +1,8 @@
 
-angular.module('ecommerce').controller('NewCategoriaController', function ($scope, $location, locationParser, CategoriaResource , LivroResource) {
+angular.module('ecommerce').controller('NewCategoriaController', function ($scope, $location, locationParser, CategoriaResource ) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.categoria = $scope.categoria || {};
-    
-    $scope.CadLivroList = LivroResource.queryAll(function(items){
-        $scope.CadLivroSelectionList = $.map(items, function(item) {
-            return ( {
-                value : item.id,
-                text : item.id
-            });
-        });
-    });
-    $scope.$watch("CadLivroSelection", function(selection) {
-        if (typeof selection != 'undefined') {
-            $scope.categoria.CadLivro = [];
-            $.each(selection, function(idx,selectedItem) {
-                var collectionItem = {};
-                collectionItem.id = selectedItem.value;
-                $scope.categoria.CadLivro.push(collectionItem);
-            });
-        }
-    });
     
 
     $scope.save = function() {

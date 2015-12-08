@@ -7,8 +7,10 @@ import java.util.Set;
 
 import javax.ejb.Stateful;
 import javax.inject.Inject;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 
 import br.univel.dao.LivroDao;
 import br.univel.dao.PedidosDao;
@@ -22,8 +24,6 @@ import br.univel.ecommerce.Pedidos;
 @Path("/cart")
 public class CarrinhoEndpoint implements Serializable {
 
-	HashMap<Long, Integer> map = new HashMap<Long, Integer>();
-
 	@Inject
 	private Carrinho carrinho;
 
@@ -36,38 +36,26 @@ public class CarrinhoEndpoint implements Serializable {
 	@Inject
 	UsuarioDao udao;
 
+	@GET
 	@Path("/adicionar/{id:[0-9][0-9]*}/{qtd:[0-9][0-9]*}")
-	public void adicionarProduto(@PathParam("id") long id,
+	public synchronized Response adicionarProduto(@PathParam("id") long id,
 			@PathParam("qtd") int qtd) {
 		Livro l = pe.findById(id);
-		boolean flag = false;
-		map.put(id, qtd);
+		carrinho.addLivro(l, qtd);
 
-		if (!carrinho.getLivros().isEmpty())
-			for (Livro prod : carrinho.getLivros()) {
-				if (prod.getId() == id) {
-					map.replace(prod.getId(), qtd);
-					flag = false;
-				} else {
-
-					map.put(l.getId(), qtd);
-					flag = true;
-				}
-			}
-		else
-			carrinho.addLivro(l);
-		if (flag)
-			carrinho.getLivros().remove(l);
+		return Response.ok().build();
 	}
-
+	@GET
 	@Path("/limparCarrinho/")
-	public void limpar() {
+	public synchronized Response limpar() {
 		carrinho.limpar();
-		map.clear();
-	}
 
+		return Response.ok().build();
+	}
+	@GET
 	@Path("/finalizar/{idusuario:[0-9][0-9]*}")
-	public void finalizar(@PathParam("idusuario") long Idusuario) {
+	public synchronized Response finalizar(
+			@PathParam("idusuario") long Idusuario) {
 		Pedidos pedido = new Pedidos();
 		Set<PedidoLivros> lista = new HashSet<>();
 		double total = 0;
@@ -76,7 +64,7 @@ public class CarrinhoEndpoint implements Serializable {
 			PedidoLivros pl = new PedidoLivros();
 			pl.setNomeproduto(p.getTitulo());
 			pl.setPreco(p.getPreco());
-			pl.setQuantidade(map.get(p.getId()));
+			pl.setQuantidade(carrinho.getMap().get(p));
 			lista.add(pl);
 			total += p.getPreco() * pl.getQuantidade();
 		}
@@ -85,6 +73,6 @@ public class CarrinhoEndpoint implements Serializable {
 		pedido.setTotalVenda(total);
 		pedido.setUsuario(udao.findById(Idusuario));
 		pdao.create(pedido);
+		return Response.ok().build();
 	}
-
 }

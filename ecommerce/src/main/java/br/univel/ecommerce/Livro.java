@@ -32,8 +32,8 @@ public class Livro implements Serializable
    @Column(name = "version")
    private int version;
 
-   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   private Categoria Categoria;
+   @ManyToOne
+   private Categoria categoria;
 
    @Column
    private String titulo;
@@ -112,12 +112,12 @@ public class Livro implements Serializable
 
    public Categoria getCategoria()
    {
-      return this.Categoria;
+      return this.categoria;
    }
 
-   public void setCadCategoria(final Categoria CadCategoria)
+   public void setCategoria(final Categoria CadCategoria)
    {
-      this.Categoria = CadCategoria;
+      this.categoria = CadCategoria;
    }
 
    public String getTitulo()

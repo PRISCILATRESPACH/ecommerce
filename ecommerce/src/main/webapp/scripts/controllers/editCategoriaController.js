@@ -1,6 +1,6 @@
 
 
-angular.module('ecommerce').controller('EditCategoriaController', function($scope, $routeParams, $location, CategoriaResource , LivroResource) {
+angular.module('ecommerce').controller('EditCategoriaController', function($scope, $routeParams, $location, CategoriaResource ) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
@@ -9,27 +9,6 @@ angular.module('ecommerce').controller('EditCategoriaController', function($scop
         var successCallback = function(data){
             self.original = data;
             $scope.categoria = new CategoriaResource(self.original);
-            LivroResource.queryAll(function(items) {
-                $scope.CadLivroSelectionList = $.map(items, function(item) {
-                    var wrappedObject = {
-                        id : item.id
-                    };
-                    var labelObject = {
-                        value : item.id,
-                        text : item.id
-                    };
-                    if($scope.categoria.CadLivro){
-                        $.each($scope.categoria.CadLivro, function(idx, element) {
-                            if(item.id == element.id) {
-                                $scope.CadLivroSelection.push(labelObject);
-                                $scope.categoria.CadLivro.push(wrappedObject);
-                            }
-                        });
-                        self.original.CadLivro = $scope.categoria.CadLivro;
-                    }
-                    return labelObject;
-                });
-            });
         };
         var errorCallback = function() {
             $location.path("/Categoria");
@@ -67,17 +46,6 @@ angular.module('ecommerce').controller('EditCategoriaController', function($scop
         $scope.categoria.$remove(successCallback, errorCallback);
     };
     
-    $scope.CadLivroSelection = $scope.CadLivroSelection || [];
-    $scope.$watch("CadLivroSelection", function(selection) {
-        if (typeof selection != 'undefined' && $scope.categoria) {
-            $scope.categoria.CadLivro = [];
-            $.each(selection, function(idx,selectedItem) {
-                var collectionItem = {};
-                collectionItem.id = selectedItem.value;
-                $scope.categoria.CadLivro.push(collectionItem);
-            });
-        }
-    });
     
     $scope.get();
 });

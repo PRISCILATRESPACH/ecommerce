@@ -4,18 +4,18 @@ angular.module('ecommerce').controller('NewLivroController', function ($scope, $
     $scope.$location = $location;
     $scope.livro = $scope.livro || {};
     
-    $scope.CategoriaList = CategoriaResource.queryAll(function(items){
-        $scope.CategoriaSelectionList = $.map(items, function(item) {
+    $scope.categoriaList = CategoriaResource.queryAll(function(items){
+        $scope.categoriaSelectionList = $.map(items, function(item) {
             return ( {
                 value : item.id,
                 text : item.id
             });
         });
     });
-    $scope.$watch("CategoriaSelection", function(selection) {
+    $scope.$watch("categoriaSelection", function(selection) {
         if ( typeof selection != 'undefined') {
-            $scope.livro.Categoria = {};
-            $scope.livro.Categoria.id = selection.value;
+            $scope.livro.categoria = {};
+            $scope.livro.categoria.id = selection.value;
         }
     });
     

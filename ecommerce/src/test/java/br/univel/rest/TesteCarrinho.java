@@ -28,12 +28,11 @@ import br.univel.ecommerce.PedidoLivros;
 
 public class TesteCarrinho {
 	
-@Inject
-UsuarioDao udao;
+	@Inject
+	UsuarioDao udao;
 
-@Inject
-Carrinho carrinho;
-
+	@Inject
+	Carrinho carrinho;
 
 	private Client createClient() {
 		return ClientBuilder.newBuilder()
@@ -41,77 +40,58 @@ Carrinho carrinho;
 	}
 
 	@Test
-	public void testeGravacaoLeituraCliente() {
-		
-		 Set<PedidoLivros> pedidoslivros = new HashSet<PedidoLivros>();
-		 
-		for(Livro li :carrinho.getLivros()){
-			PedidoLivros t = new PedidoLivros();
-			t.setNomeproduto(li.getTitulo());
-			t.setPreco(li.getPreco());
-			t.setQuantidade(Integer.parseInt(li.getQuantidade()));
-			pedidoslivros.add(t);
-		}
-		
-		
+	public void testeGravacaoCarrinhoVenda() {
+		Livro l1 = buscaLivro(3);
+		Livro l2 = buscaLivro(6);
 
-		String urlClienteCriado;
-		{
-			Entity<Pedidos> clienteJson = Entity.json(pedidos);
+		assertEquals(addLivroQtd(l1.getId(), 2), true);
+		assertEquals(addLivroQtd(l2.getId(), 1), true);
+		assertEquals(addLivroQtd(l2.getId(), 5), true);
 
-			Client webClientGravacao = createClient();
+		assertEquals(finalizarCarrinho(1), true);
 
-			WebTarget destinoGravacao = webClientGravacao
-					.target("http://localhost:8080/ecommerce/rest/livros");
+	}
 
-			Response respostaGravacao = destinoGravacao
-					.request(MediaType.APPLICATION_JSON)
-					.accept(MediaType.APPLICATION_JSON).post(clienteJson);
+	public Livro buscaLivro(long id) {
+		Client webClientLeitura = createClient();
 
-			assertEquals(Status.CREATED.getStatusCode(),
-					respostaGravacao.getStatus());
+		WebTarget destinoLeitura = webClientLeitura
+				.target("http://localhost:8080/ecommerce/rest/livros/" + id);
 
-			urlClienteCriado = respostaGravacao.getHeaderString("Location");
-		}
+		Response respostaLeitura = destinoLeitura
+				.request(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON).get();
 
-		Carrinho livroGravado;
-		{
-			Client webClientLeitura = createClient();
+		Livro l = respostaLeitura.readEntity(Livro.class);
+		return l;
+	}
 
-			WebTarget destinoLeitura = webClientLeitura
-					.target(urlClienteCriado);
+	private boolean addLivroQtd(Long idLivro, int qtd) {
+		Client webClientLeitura = createClient();
 
-			Response respostaLeitura = destinoLeitura
-					.request(MediaType.APPLICATION_JSON)
-					.accept(MediaType.APPLICATION_JSON).get();
+		WebTarget destinoLeitura = webClientLeitura
+				.target("http://localhost:8080/ecommerce/rest/cart/adicionar/"
+						+ idLivro + "/" + qtd);
 
-			livroGravado = respostaLeitura.readEntity(Carrinho.class);
+		Response respostaLeitura = destinoLeitura.request().get();
+		assertEquals(Status.OK.getStatusCode(), respostaLeitura.getStatus());
 
-			respostaLeitura.getHeaders().entrySet().stream().forEach(t -> {
-				System.out.println(t.getKey());
-				t.getValue().forEach(e -> System.out.println("\t" + e));
-			});
-		}
+		return Status.OK.getStatusCode() == respostaLeitura.getStatus();
+	}
 
-		assertNotNull(livroGravado.getId());
-		assertNotNull(livroGravado.getVersion());
+	private boolean finalizarCarrinho(int idCliente) {
 
-		assertEquals(pedidos.getTitulo(), livroGravado.getTitulo());
-		assertEquals(pedidos.getCategoria(), livroGravado.getCategoria());
-		assertEquals(pedidos.getAutor(), livroGravado.getAutor());
-		assertEquals(pedidos.getEditora(), livroGravado.getEditora());
-		assertEquals(pedidos.getISBN(), livroGravado.getISBN());
-		assertEquals(pedidos.getImagem(), livroGravado.getImagem());
-		assertEquals(pedidos.getPaginas(), livroGravado.getPaginas());
-		assertEquals(pedidos.getPreco(), livroGravado.getPreco());
-		assertEquals(pedidos.getQuantidade(), livroGravado.getQuantidade());
-		
-		
-		
-		
-		
-		
+		Client webClientLeitura = createClient();
 
+		WebTarget destinoLeitura = webClientLeitura
+				.target("http://localhost:8080/ecommerce/rest/cart/finalizar/"
+						+ idCliente);
+
+		Response respostaLeitura = destinoLeitura.request().get();
+		assertEquals(Status.OK.getStatusCode(), respostaLeitura.getStatus());
+		System.out.println(respostaLeitura.getStatus());
+
+		return Status.OK.getStatusCode() == respostaLeitura.getStatus();
 	}
 }
 

@@ -10,7 +10,7 @@ angular.module('ecommerce').controller('EditLivroController', function($scope, $
             self.original = data;
             $scope.livro = new LivroResource(self.original);
             CategoriaResource.queryAll(function(items) {
-                $scope.CategoriaSelectionList = $.map(items, function(item) {
+                $scope.categoriaSelectionList = $.map(items, function(item) {
                     var wrappedObject = {
                         id : item.id
                     };
@@ -18,10 +18,10 @@ angular.module('ecommerce').controller('EditLivroController', function($scope, $
                         value : item.id,
                         text : item.id
                     };
-                    if($scope.livro.Categoria && item.id == $scope.livro.Categoria.id) {
-                        $scope.CategoriaSelection = labelObject;
-                        $scope.livro.Categoria = wrappedObject;
-                        self.original.Categoria = $scope.livro.Categoria;
+                    if($scope.livro.categoria && item.id == $scope.livro.categoria.id) {
+                        $scope.categoriaSelection = labelObject;
+                        $scope.livro.categoria = wrappedObject;
+                        self.original.categoria = $scope.livro.categoria;
                     }
                     return labelObject;
                 });
@@ -63,10 +63,10 @@ angular.module('ecommerce').controller('EditLivroController', function($scope, $
         $scope.livro.$remove(successCallback, errorCallback);
     };
     
-    $scope.$watch("CategoriaSelection", function(selection) {
+    $scope.$watch("categoriaSelection", function(selection) {
         if (typeof selection != 'undefined') {
-            $scope.livro.Categoria = {};
-            $scope.livro.Categoria.id = selection.value;
+            $scope.livro.categoria = {};
+            $scope.livro.categoria.id = selection.value;
         }
     });
     

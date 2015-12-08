@@ -17,7 +17,7 @@ angular.module('ecommerce').controller('SearchLivroController', function($scope,
         }
         return max;
     };
-    $scope.CategoriaList = CategoriaResource.queryAll();
+    $scope.categoriaList = CategoriaResource.queryAll();
 
     $scope.performSearch = function() {
         $scope.searchResults = LivroResource.queryAll(function(){
